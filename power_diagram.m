@@ -24,6 +24,7 @@ face = convhull(pl);
 fn = calculate_face_normal(face,pl);
 ind = fn(:,3)<0;
 face = face(ind,:);
+% face = repair_mesh(face);
 pd.face = face;
 % M = Mesh(face,pl);
 vr = compute_vertex_ring(face,uv,[],true);

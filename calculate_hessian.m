@@ -1,4 +1,4 @@
-function H = calculate_hessian(cp,pd,mu)
+function H = calculate_hessian(cp,pd,F)
 nc = size(pd.cell,1);
 ne = (sum(cellfun(@length,pd.cell))-nc);
 I = zeros(ne,1);
@@ -21,6 +21,7 @@ J2 = zeros(ne,1);
 V2 = zeros(ne,1);
 k = 1;
 in = inpolygon(pd.dpe(:,1),pd.dpe(:,2),cp(:,1),cp(:,2));
+% F = scatteredInterpolant(pd.uv,mu,'natural');
 for i = 1:length(I)
     I2(k) = C(I(i),J(i));
     J2(k) = C(J(i),I(i));
@@ -45,15 +46,14 @@ for i = 1:length(I)
                 pi
             end
             if in2(1)
-                lij = norm(pi-p1);
+                lij = norm(pi-p1)*(F(pi)+F(p1))/2;
             else
-                lij = norm(pi-p2);
+                lij = norm(pi-p2)*(F(pi)+F(p2))/2;
             end
         case 0 % both point outside the polygon
             lij = 0;
-    end
-    mu_k = ((mu(I2(k))+mu(J2(k)))/2);
-    V2(k) = -lij*mu_k/norm(pd.uv(I2(k),:)-pd.uv(J2(k),:));
+    end    
+    V2(k) = -lij/norm(pd.uv(I2(k),:)-pd.uv(J2(k),:));
     k = k+1;
 end
 H = sparse(I2,J2,V2);

@@ -1,4 +1,4 @@
-function D = calculate_gradient(cp,pd,mu)
+function D = calculate_gradient(cp,pd,F)
 % gradient is the area of cells, parts inside the given polygon cp
 nc = size(pd.cell,1);
 D = zeros(nc,1);
@@ -13,21 +13,22 @@ for i = 1:nc
     end
 end
 cp(end,:) = [];
+
 for i = 1:nc
     ci = pd.dpe(pd.cell{i},:);
 %     ci = flipud(ci);    
     if in(i)
-        D(i) = polyarea(ci(:,1),ci(:,2))*mu(i);
+        mui = (2*mean(F(ci))+F(mean(ci)))/3;
+        D(i) = polyarea(ci(:,1),ci(:,2))*mui;        
     else % if cell's part outside cp
         try
             pc = polybool([cp(:,1),cp(:,2)],[ci(:,1),ci(:,2)],'and');
             xy = pc{1};
-            D(i) = polyarea(xy(:,1),xy(:,2))*mu(i);
+            mui = (2*mean(F(xy))+F(mean(xy)))/3;
+            D(i) = polyarea(xy(:,1),xy(:,2))*mui;
         catch ex
             save gradient
 %             pause
-        end
-        
-        
+        end        
     end
 end
