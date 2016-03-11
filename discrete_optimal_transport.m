@@ -1,15 +1,20 @@
-function [pd,h] = discrete_optimal_transport(cp,face,uv,mu,F)
+function [pd,h] = discrete_optimal_transport(cp,face,uv,mu,F,h,K)
 % Discrete Optimal Transport
 % cp: convex polytope
 % uv: k distinc points in R^n
 % mu: target measure, k positive scaler s.t. sum(mu) = \int_uv{F}
 % F: source meature on uv
 np = size(uv,1);
-h = zeros(np,1);
+if ~exist('h','var') || isempty(h)
+    h = zeros(np,1);
+end
 pd = power_diagram(face,uv,h);
 k = 1;
+if ~exist('K','var')
+    K = 100;
+end
 tic;
-while true
+while k<K
     G = calculate_gradient(cp,pd,F);    
     D = G-mu;
     H = calculate_hessian(cp,pd,F);
