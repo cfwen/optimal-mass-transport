@@ -3,7 +3,8 @@ addpath(genpath('../library/geom2d/'))
 addpath('../library/polybool_clipper/')
 addpath(genpath('../geometry-processing-package/'))
 %%
-[face,vertex,extra] = read_mfile('alex.idrf.uv.m');
+[face,vertex,extra] = read_mfile('data\n1.uv.m');
+% [face,vertex,extra] = read_mfile('test_source-2.idrf.uv.m');
 uv = extra.Vertex_uv;
 % uv must be in unit cicle, center at (0,0), radius 1
 % [face,vertex,extra] = read_mfile('Gorilla.uv.mobius.m');
@@ -15,29 +16,34 @@ uv = extra.Vertex_uv;
 
 
 va = vertex_area(face,vertex)/3; % vertex area of 3d surface
-va = va/sum(va); % sum(va) == 1
+va = va/sum(va)*pi; % sum(va) == pi
 
 va0 = vertex_area(face,uv)/3;
 uv = uv*sqrt(pi/sum(va0)); % make disk area to be pi
 va0 = vertex_area(face,uv)/3;
 mu = va./va0;
 % F = scatteredInterpolant(uv,ones(size(mu)),'natural');
-F = scatteredInterpolant(uv,mu,'natural');
+sigma = scatteredInterpolant(uv,mu,'natural');
 
-[face2,vertex2,extra2] = read_mfile('sophie.idrf.uv.m');
+[face2,vertex2,extra2] = read_mfile('data\e2.uv.m');
+% [face2,vertex2,extra2] = read_mfile('test_target.idrf.uv.m');
 uv2 = extra2.Vertex_uv;
+
 va20 = vertex_area(face2,uv2)/3;
 uv2 = uv2*sqrt(pi/sum(va20));
-z2 = uv2(:,1)+1i*uv2(:,2);
-z2 = z2*exp(-1i*pi/4);
-uv2 = [real(z2),imag(z2)];
+% z2 = uv2(:,1)+1i*uv2(:,2);
+% p0 = z2(365);
+% z2 = z2*exp(-1i*angle(p0));
+% z2 = (z2+0.2)./(1+0.2*z2);
+% z2 = z2*exp(-1i*pi/4);
+% uv2 = [real(z2),imag(z2)];
 va20 = vertex_area(face2,uv2)/3;
 va2 = vertex_area(face2,vertex2)/3; % vertex area of 3d surface
-va2 = va2/sum(va2); % sum(va) == 1
+va2 = va2/sum(va2)*pi; % sum(va) == pi
 % F = scatteredInterpolant(uv2,va2);
 % mu2 = F(uv);
 % mu2 = mu2/sum(mu2);
-mu2 = va2;
+delta2 = va2;
 
 bd2 = compute_bd(face2);
 disk2 = uv2(bd2,:);
@@ -48,8 +54,8 @@ disk2 = uv2(bd2,:);
 % compute power diagram with desired area
 % uv(bd,:) is the unit circle
 
-mu3 = ones(size(mu2))/size(mu2,1);
-[pd,h] = discrete_optimal_transport(disk2,face2,uv2,mu2,F);
+% mu3 = ones(size(mu2))/size(mu2,1);
+[pd,h] = discrete_optimal_transport(disk2,face2,uv2,delta2,sigma);
 
 % centroid of power diagram cell, as new position of uv
 % the boundary of uv_new has moved, so you might need to label some points
