@@ -28,9 +28,9 @@ while k<K
     dh = dh - mean(dh);
     dh = dh - mean(dh);
     
-    str = sprintf('#%02d: max|dh| = %.10f',k,max(abs(dh)));
+    str = sprintf('#%02d: max|D|/|mu| = %.10f',k,max(abs(D))/norm(mu,inf));
     disp(str);
-    if max(abs(dh)) < 1e-4
+    if max(abs(D))/norm(mu,inf) < 1e-4
         break
     end
     

@@ -53,10 +53,10 @@ for i = 1:size(K,1)-1
     vec = [vec(2), -vec(1)];
     mid = (uv(i2,:) + uv(i1,:))/2;
     intersects = intersectRayPolygon([mid,vec], box);
-    if length(intersects(:)) ~= 2
-        pause
-    end
-    vb(i,:) = intersectRayPolygon([mid,vec], box);
+%     if length(intersects(:)) ~= 2
+%         pause
+%     end
+    vb(i,:) = intersects(1,:);
 %     vec = uv(i1,:)-uv(i2,:);
 %     ip = polygon_line_intersection(box,[vec,dot(uv(i2,:),uv(i2,:))/2-dot(uv(i1,:),uv(i1,:))/2]);
 %     if det([1,uv(i1,:);1,uv(i2,:);1,ip(1,:)])<0

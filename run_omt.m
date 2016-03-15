@@ -6,11 +6,12 @@ target = 'n2.uv';
 [face2,vertex2,extra2] = read_mfile([data_dir target]);
 
 uv = extra.Vertex_uv;
-uv = minimize_area_distortion(face,vertex,uv);
+% bp is the index of end point close to top
+uv = normalize_uv(face,vertex,uv,bp);
 sigma = compute_measure(face,vertex,uv,'continuous');
 
 uv2 = extra2.Vertex_uv;
-uv2 = minimize_area_distortion(face2,vertex2,uv2);
+uv2 = normalize_uv(face2,vertex2,uv2,bp2);
 delta2 = compute_measure(face2,vertex2,uv2);
 
 bd2 = compute_bd(face2);
