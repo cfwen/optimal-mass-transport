@@ -18,4 +18,4 @@ See demo.m for more examples.
    [GPP]: <https://bitbucket.org/group-gu/geometry-processing-package.git> 
    [export_fig]: <https://github.com/altmany/export_fig.git>
    [initial.pd]: result/initial_pd.png "initial power diagram"
-   [final.pd]: resutl/final_pd.png "final power diagram"
+   [final.pd]: result/final_pd.png "final power diagram"
