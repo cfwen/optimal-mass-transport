@@ -1,5 +1,9 @@
-function D = calculate_gradient(cp,pd,sigma)
+function D = calculate_gradient(cp,pd,sigma,more_accurate)
 % gradient is the area of cells, parts inside the given polygon cp
+if ~exist('more_accurate','var')    
+    more_accurate = false;
+end
+
 nc = size(pd.cell,1);
 D = zeros(nc,1);
 
@@ -13,12 +17,10 @@ for i = 1:nc
     end
 end
 cp(end,:) = [];
-
-need_more_accurate = false;
 for i = 1:nc
     ci = pd.dpe(pd.cell{i},:);
     
-    if need_more_accurate
+    if more_accurate
         if ~in(i)
             pc = polybool([cp(:,1),cp(:,2)],[ci(:,1),ci(:,2)],'and');
             ci = pc{1};
@@ -45,8 +47,8 @@ for i = 1:nc
             mui = (2*mean(sigma(xy))+sigma(mean(xy)))/3;
             D(i) = polyarea(xy(:,1),xy(:,2))*mui;
         catch ex
-            save gradient
-%             pause
+            save ex.gradient.mat
+            error('ERROR: occured when calculate gradient')
         end        
     end
 end

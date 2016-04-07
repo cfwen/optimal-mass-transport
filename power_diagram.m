@@ -24,11 +24,8 @@ face = convhull(pl);
 fn = calculate_face_normal(face,pl);
 ind = fn(:,3)<0;
 face = face(ind,:);
-% face = repair_mesh(face);
 pd.face = face;
-% M = Mesh(face,pl);
 vr = compute_vertex_ring(face,uv,[],true);
-% vr = M.ComputeVertexRing();
 pd.uv = uv;
 pd.dp = zeros(size(face,1),2);
 pd.cell = cell(size(pl,1),1);
@@ -53,17 +50,7 @@ for i = 1:size(K,1)-1
     vec = [vec(2), -vec(1)];
     mid = (uv(i2,:) + uv(i1,:))/2;
     intersects = intersectRayPolygon([mid,vec], box);
-%     if length(intersects(:)) ~= 2
-%         pause
-%     end
     vb(i,:) = intersects(1,:);
-%     vec = uv(i1,:)-uv(i2,:);
-%     ip = polygon_line_intersection(box,[vec,dot(uv(i2,:),uv(i2,:))/2-dot(uv(i1,:),uv(i1,:))/2]);
-%     if det([1,uv(i1,:);1,uv(i2,:);1,ip(1,:)])<0
-%         vb(i,:) = ip(1,:);
-%     else
-%         vb(i,:) = ip(2,:);
-%     end
 end
 pd.dpe = [pd.dp;vb];
 vvif = compute_connectivity(face);

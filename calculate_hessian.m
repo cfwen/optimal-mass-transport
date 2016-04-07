@@ -1,4 +1,4 @@
-function H = calculate_hessian(cp,pd,F)
+function H = calculate_hessian(cp,pd,sigma)
 nc = size(pd.cell,1);
 ne = (sum(cellfun(@length,pd.cell))-nc);
 I = zeros(ne,1);
@@ -19,9 +19,8 @@ C = sparse(I,J,V);
 I2 = zeros(ne,1);
 J2 = zeros(ne,1);
 V2 = zeros(ne,1);
-k = 1;
 in = inpolygon(pd.dpe(:,1),pd.dpe(:,2),cp(:,1),cp(:,2));
-% F = scatteredInterpolant(pd.uv,mu,'natural');
+k = 1;
 for i = 1:length(I)
     I2(k) = C(I(i),J(i));
     J2(k) = C(J(i),I(i));
@@ -29,9 +28,7 @@ for i = 1:length(I)
     p1 = pd.dpe(I(i),:);
     p2 = pd.dpe(J(i),:);
     in2 = in([I(i) J(i)]);
-    if I2(k) == 6073
-%         pause
-    end
+    
     switch sum(in2)
         case 2 % if both points in polygon
             lij = norm(p1-p2);
@@ -39,16 +36,16 @@ for i = 1:length(I)
             try                
                 pi = intersectEdgePolygon([p1,p2],cp);                
             catch ex
-                save hessian
-                pause
+                save ex.hessian.mat
+                error('ERROR: occured when calculate hessian')
             end
             if length(p1) ~= length(pi)
-                pi
+                error('ERROR: edge not intersect with cp at one position')
             end
             if in2(1)
-                lij = norm(pi-p1)*(F(pi)+F(p1))/2;
+                lij = norm(pi-p1)*(sigma(pi)+sigma(p1))/2;
             else
-                lij = norm(pi-p2)*(F(pi)+F(p2))/2;
+                lij = norm(pi-p2)*(sigma(pi)+sigma(p2))/2;
             end
         case 0 % both point outside the polygon
             lij = 0;
@@ -58,6 +55,4 @@ for i = 1:length(I)
 end
 H = sparse(I2,J2,V2);
 Hs = -sum(H,2);
-% ind = Hs==0; % some cell may be out of domain
-% Hs(ind) = 1;
 H = H + sparse(diag(Hs));

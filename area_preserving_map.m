@@ -1,14 +1,24 @@
 function [face_new,uv_new,pd] = area_preserving_map(face,uv,area,corner)
+% AREA PRESERVING MAP
+% Detail: compute area preserving map on disk or rectangle
+% 
+% face : connectivity of mesh
+% uv   : 2d vertex of mesh
+% area : prescribed area, sum(area) == sum(vertex area of mesh(face,uv))
+% corner : optional, four corners of rectangle, can be just 4x1 vertex
+%          index, or 4x2 with second col be complex target position of
+%          rectangle corners, or 4x3 with second and third cols be real
+%          target position of corners
 
-bd = compute_bd(face);
 va = vertex_area(face,uv)/3;
 if abs(sum(area)-sum(va))>1e-3 
     error('target area sum must equal to source area sum')
 end
+bd = compute_bd(face);
 cp = uv(bd,:);
 sigma = scatteredInterpolant(uv,ones(size(uv,1),1));
 delta = area/sum(area)*sum(va);
-pd = discrete_optimal_transport(cp,face,uv,delta,sigma);
+pd = discrete_optimal_transport(cp,face,uv,sigma,delta);
 face_new = pd.face(:,[2 1 3]);
 uv_new = compute_centroid(cp,pd);
 if exist('corner','var')
