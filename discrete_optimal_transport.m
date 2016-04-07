@@ -1,9 +1,9 @@
-function [pd,h] = discrete_optimal_transport(cp,face,uv,mu,F,h,K)
+function [pd,h] = discrete_optimal_transport(cp,face,uv,delta,sigma,h,K)
 % Discrete Optimal Transport
 % cp: convex polytope
 % uv: k distinc points in R^n
-% mu: target measure, k positive scaler s.t. sum(mu) = \int_uv{F}
-% F: source meature on uv
+% delta: target measure, k positive scaler s.t. sum(delta) = \int_uv{sigma}
+% sima: source meature on uv
 np = size(uv,1);
 if ~exist('h','var') || isempty(h)
     h = zeros(np,1);
@@ -15,9 +15,9 @@ if ~exist('K','var')
 end
 tic;
 while k<K
-    G = calculate_gradient(cp,pd,F);    
-    D = G-mu;
-    H = calculate_hessian(cp,pd,F);
+    G = calculate_gradient(cp,pd,sigma);    
+    D = G - delta;
+    H = calculate_hessian(cp,pd,sigma);
     H = (H+H')/2;
     H(1,1) = H(1,1)+1;
     dh = H\D;
@@ -28,9 +28,9 @@ while k<K
     dh = dh - mean(dh);
     dh = dh - mean(dh);
     
-    str = sprintf('#%02d: max|D|/|mu| = %.10f',k,max(abs(D))/norm(mu,inf));
+    str = sprintf('#%02d: max|dh| = %.10f',k,max(abs(dh)));
     disp(str);
-    if max(abs(D))/norm(mu,inf) < 1e-4
+    if max(abs(dh)) < 1e-5
         break
     end
     
