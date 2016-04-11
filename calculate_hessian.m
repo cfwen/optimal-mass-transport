@@ -31,7 +31,7 @@ for i = 1:length(I)
     
     switch sum(in2)
         case 2 % if both points in polygon
-            lij = norm(p1-p2);
+            lij = norm(p1-p2)*(sigma(p1)+sigma(p2))/2;
         case 1 % if one point inside, one outside
             try                
                 pi = intersectEdgePolygon([p1,p2],cp);                
