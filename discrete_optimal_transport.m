@@ -2,7 +2,7 @@ function [pd,h] = discrete_optimal_transport(cp,face,uv,sigma,delta,h,option)
 % Discrete Optimal Transport
 % 
 % cp: convex polytope
-% uv: k distinc points in R^n
+% uv: k distinc points in R^2
 % sima: source meature on uv
 % delta: target measure, k positive scaler s.t. sum(delta) = \int_uv{sigma}
 % h: initial translation, can be empty. useful to continue previous computing
@@ -28,11 +28,10 @@ while k < option.max_iter
     G = calculate_gradient(cp,pd,sigma);    
     D = G - delta;
     H = calculate_hessian(cp,pd,sigma);
-    H = (H+H')/2;
+    
     H(1,1) = H(1,1)+1;
     dh = H\D;
-    if ~all(isfinite(dh))
-        save discrete_optimal_transport
+    if ~all(isfinite(dh))        
         error(['ERROR: |dh| goes infinite, most probably due to convexhull '...
             'failing, which is due to some cell(s) disappear. Real reason '...
             'is mesh quality/measure is too bad']);

@@ -1,6 +1,9 @@
 function D = calculate_gradient(cp,pd,sigma,more_accurate)
 % gradient is the area of cells, parts inside the given polygon cp
-if ~exist('more_accurate','var')    
+
+% if need more accurate, cell area will be calculated triangle by triangle,
+% otherwise a approximation method will be used
+if ~exist('more_accurate','var')
     more_accurate = false;
 end
 
@@ -28,7 +31,6 @@ for i = 1:nc
         end
         
         p0 = mean(ci(1:end-1,:));
-
         for j = 1:length(ci)-1
             p1 = ci(j,:);
             p2 = ci(j+1,:);
@@ -47,8 +49,7 @@ for i = 1:nc
             mui = (2*mean(sigma(xy))+sigma(mean(xy)))/3;
             D(i) = polyarea(xy(:,1),xy(:,2))*mui;
         catch ex
-            save ex.gradient.mat
-            error('ERROR: occured when calculate gradient')
+            error('ERROR: occured when computing polygon intersection, most probably this cell went out of prescibed boundary')
         end        
     end
 end

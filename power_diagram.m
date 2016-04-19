@@ -1,5 +1,8 @@
 function [pd,h] = power_diagram(face,uv,h,dh)
-if ~exist('dh','var')
+if ~exist('h','var') || isempty(h)
+    h = zeros(size(uv,1),1);    
+end
+if ~exist('dh','var') || isempty(h)
     dh = h*0;
 end
 % lift uv to a higher dim hyperbola
@@ -8,17 +11,19 @@ c = 1;
 while true
     h = h - c*dh;
     pl = [uv,dot(uv,uv,2)-h];
-    K = convhull(pl);
-    fn = calculate_face_normal(K,pl);
+    face = convhull(pl);
+    fn = calculate_face_normal(face,pl);
     ind = fn(:,3)<0;
     if sum(ind) < nf
         h = h + c*dh;
         c = c/2;
     else
         break;
-    end    
+    end
+    if max(abs(dh)) == 0
+        break
+    end
 end
-face = convhull(pl);
 % use face normal to remove "upper" face, to get so-called upper
 % envelop
 fn = calculate_face_normal(face,pl);

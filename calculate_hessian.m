@@ -31,16 +31,15 @@ for i = 1:length(I)
     
     switch sum(in2)
         case 2 % if both points in polygon
-            lij = norm(p1-p2);
+            lij = norm(p1-p2)*(sigma(p1)+sigma(p2))/2;
         case 1 % if one point inside, one outside
             try                
                 pi = intersectEdgePolygon([p1,p2],cp);                
-            catch ex
-                save ex.hessian.mat
+            catch ex                
                 error('ERROR: occured when calculate hessian')
             end
             if length(p1) ~= length(pi)
-                error('ERROR: edge not intersect with cp at one position')
+                error('ERROR: edge not intersect with boundary at one point')
             end
             if in2(1)
                 lij = norm(pi-p1)*(sigma(pi)+sigma(p1))/2;
@@ -56,3 +55,4 @@ end
 H = sparse(I2,J2,V2);
 Hs = -sum(H,2);
 H = H + sparse(diag(Hs));
+H = (H+H')/2;
