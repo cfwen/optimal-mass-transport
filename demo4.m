@@ -9,7 +9,7 @@
 % meshes are aligned in 3D space, uv can be very different. Use unaligned
 % uv may produce some result, but it can be meaningless, especially the
 % wasserstein distance is not correct. This is the problem of conformal
-% parameterization (non unique). You need to specific three corresponding
+% parameterization (non unique). You need to specify three corresponding
 % points on surface to eliminate this ambiguity.
 
 % need comformal parameterization
