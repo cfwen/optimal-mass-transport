@@ -2,7 +2,7 @@
 % prescribed area. Domain is a square.
 
 % generate some random points in square [-1 1]x[-1 1]
-uv = (rand(5000,2)*2-1)*0.98; % not too close to boundary
+uv = (rand(2000,2)*2-1)*0.98; % not too close to boundary
 % square = [-1 -1;1 -1;1 1;-1 1];
 s = (-1:0.05:0.99)';
 s2 = (1:-0.05:-0.99)';
