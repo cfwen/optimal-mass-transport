@@ -30,15 +30,18 @@ sigma = @(xy) 1;
 [pd2,h] = discrete_optimal_transport(square,face,uv,sigma,area);
 
 %% plot result
-figure
+figure('Position',[549 346 1102 476],'Color',[1 1 1])
+subplot(1,2,1)
 plot_power_diagram(pd);
 title('initial power diagram');
 hold on
 plot(square(:,1),square(:,2),'r-');
 axis([-1 1 -1 1]);
-figure;
+axis off
+subplot(1,2,2)
 plot_power_diagram(pd2);
 title('final power diagram');
 hold on
 plot(square(:,1),square(:,2),'r-');
 axis([-1 1 -1 1]);
+axis off

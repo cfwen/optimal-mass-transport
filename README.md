@@ -5,7 +5,7 @@ Implement 2D optimal mass transport map based on theory in [Gu]. Domain can be u
 ## Example:
 Initial power digram is generated from random points, target area is set to 1/num_of_cells on all cells. left is initial power diagram, right is final power diagram.
 
-![alt text](result/demo.pd.png "power diagram")
+![alt text](result/square.pd.png "power diagram")
 
 See demo*.m for more examples.
 
