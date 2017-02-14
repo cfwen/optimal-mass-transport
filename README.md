@@ -10,13 +10,13 @@ Initial power digram is generated from random points, target area is set to 1/nu
 See demo*.m for more examples.
 
 ## Dependency:
-* [geometry-processing-package][GPP]
+* [geometry-processing-package][GPP] (download manually)
 * [geom2d][geom2d]
-* [polybool_cliper][polybool] Matlab comes with a polybool in Mapping Toolbox, however I don't have that. Usage is not identical with Matlab's polybool
+* [polybool_cliper][polybool] replace Matlab's builtin functions polybool and polyarea
 * [export_fig][export_fig] (optional, use to generate fig)
 
-   [Gu]: <http://arxiv.org/pdf/1302.5472v1>
-   [GPP]: <https://bitbucket.org/group-gu/geometry-processing-package.git> 
-   [export_fig]: <https://github.com/altmany/export_fig.git>
-   [geom2d]: <http://www.mathworks.com/matlabcentral/fileexchange/7844-geom2d>
-   [polybool]: <https://sites.google.com/site/ulfgri/numerical/polybool>
+   [Gu]: <http://dx.doi.org/10.4310/AJM.2016.v20.n2.a7>
+   [GPP]: <https://github.com/group-gu/geometry-processing-package> 
+   [export_fig]: <https://github.com/altmany/export_fig>
+   [geom2d]: <https://github.com/dlegland/matGeom>
+   [polybool]: <https://github.com/group-gu/polybool_clipper>
