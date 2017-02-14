@@ -25,13 +25,14 @@ pd = power_diagram(face,uv,h);
 k = 1;
 tic;
 while k < option.max_iter
-    G = calculate_gradient(cp,pd,sigma);    
+    G = calculate_gradient(cp,pd,sigma);
+    G = G/sum(G)*sum(delta);
     D = G - delta;
     H = calculate_hessian(cp,pd,sigma);
     
     H(1,1) = H(1,1)+1;
     dh = H\D;
-    if ~all(isfinite(dh))        
+    if ~all(isfinite(dh))
         error(['ERROR: |dh| goes infinite, most probably due to convexhull '...
             'failing, which is due to some cell(s) disappear. Real reason '...
             'is mesh quality/measure is too bad']);
@@ -39,8 +40,7 @@ while k < option.max_iter
     dh = dh - mean(dh);
     dh = dh - mean(dh);
     
-    str = sprintf('#%02d: max|dh| = %.10f',k,max(abs(dh)));
-    disp(str);
+    fprintf('#%02d: max|dh| = %.10f\n',k,max(abs(dh)));    
     if max(abs(dh)) < option.eps
         break
     end

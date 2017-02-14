@@ -18,7 +18,7 @@ elk = sqrt(dot(dek,dek,2));
 ca(:,1) = cosine_law(eli, elj, elk);
 ca(:,2) = cosine_law(elj, elk, eli);
 ca(:,3) = cosine_law(elk, eli, elj);
-    
+
 function cs = cosine_law(li, lj, lk)
 cs = (lj.*lj+lk.*lk-li.*li)./(2*lj.*lk);
-cs = acos(cs);    
+cs = acos(cs);

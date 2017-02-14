@@ -49,7 +49,8 @@ for i = 1:nc
             mui = (2*mean(sigma(xy))+sigma(mean(xy)))/3;
             D(i) = polyarea(xy(:,1),xy(:,2))*mui;
         catch ex
-            error('ERROR: occured when computing polygon intersection, most probably this cell went out of prescibed boundary')
+            D(i) = 0;
+            warning('occured when computing polygon intersection, most probably this cell went out of prescibed boundary')
         end        
     end
 end
