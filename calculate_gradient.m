@@ -41,13 +41,13 @@ for i = 1:nc
     if in(i)
         ci = ci(1:end-1,:);
         mui = (2*mean(sigma(ci))+sigma(mean(ci)))/3;
-        D(i) = polyarea(ci(:,1),ci(:,2))*mui;        
+        D(i) = polyarea({ci})*mui;
     else % if cell's part outside cp
         try
             pc = polybool([cp(:,1),cp(:,2)],[ci(:,1),ci(:,2)],'and');
             xy = pc{1};
             mui = (2*mean(sigma(xy))+sigma(mean(xy)))/3;
-            D(i) = polyarea(xy(:,1),xy(:,2))*mui;
+            D(i) = polyarea({xy})*mui;
         catch ex
             D(i) = 0;
             warning('occured when computing polygon intersection, most probably this cell went out of prescibed boundary')

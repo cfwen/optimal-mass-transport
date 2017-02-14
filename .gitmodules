@@ -1,0 +1,9 @@
+[submodule "library/polybool_clipper"]
+	path = library/polybool_clipper
+	url = https://github.com/group-gu/polybool_clipper
+[submodule "library/matGeom"]
+	path = library/matGeom
+	url = https://github.com/dlegland/matGeom
+[submodule "library/export_fig"]
+	path = library/export_fig
+	url = https://github.com/altmany/export_fig
