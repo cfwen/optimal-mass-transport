@@ -52,7 +52,7 @@ for i = 1:length(I)
             end
         case 0 % both point outside the polygon
             lij = 0;
-    end    
+    end
     V2(k) = -lij/norm(pd.uv(I2(k),:)-pd.uv(J2(k),:));
     k = k+1;
 end
@@ -60,3 +60,4 @@ H = sparse(I2,J2,V2);
 Hs = -sum(H,2);
 H = H + sparse(diag(Hs));
 H = (H+H')/2;
+H = H/2;
